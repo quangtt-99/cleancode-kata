@@ -1,20 +1,20 @@
 import { TennisGame } from './TennisGame';
 
 export class TennisGame1 implements TennisGame {
-  private m_score1: number = 0;
-  private m_score2: number = 0;
+  private player1Score: number = 0;
+  private player2Score: number = 0;
   private player1Name: string;
   private player2Name: string;
-  private EQUAL: any = {
+  private TITLE_EQUAL: any = {
     0: 'Love-All',
     1: 'Fifteen-All',
     2: 'Thirty-All',
   };
 
-  private DIFF_GREATER_THAN_OR_EQUAL_FOUR: any = [-2, -1, 1, Infinity];
-  private TITLE_GREATER_THAN_OR_EQUAL_FOUR: any = ['Win for player2', 'Advantage player2', 'Advantage player1', 'Win for player1'];
+  private DIFF_SCORE: any = [-2, -1, 1, Infinity];
+  private TITLE_FROM_DEUCE: any = ['Win for player2', 'Advantage player2', 'Advantage player1', 'Win for player1'];
 
-  private ELSE = {
+  private TITLE_NOT_EQUAL = {
     0: 'Love',
     1: 'Fifteen',
     2: 'Thirty',
@@ -27,35 +27,40 @@ export class TennisGame1 implements TennisGame {
   }
 
   wonPoint(playerName: string): void {
-    if (playerName === 'player1') this.m_score1 += 1;
-    else this.m_score2 += 1;
+    if (playerName === 'player1') this.player1Score += 1;
+    else this.player2Score += 1;
   }
 
   getScore(): string {
-    const scoreFirstCheck: string = this.checkEqualAndGetScore();
-    const scoreSecondCheck: string = this.checkGreaterThanOrEqualFourAndGetScore();
-    const scoreThirdCheck: string = this.checkElseAndGetScore();
-    return scoreFirstCheck || scoreSecondCheck || scoreThirdCheck;
-  }
-
-  checkEqualAndGetScore() {
-    if (this.m_score1 === this.m_score2) {
-      return this.EQUAL[this.m_score1] || 'Deuce';
+    if (this.isEqual()) {
+      return this.getEqualScore();
     }
-    return '';
-  }
-
-  checkGreaterThanOrEqualFourAndGetScore() {
-    if (this.m_score1 >= 4 || this.m_score2 >= 4) {
-      const index: number = this.DIFF_GREATER_THAN_OR_EQUAL_FOUR.findIndex((diff: number) => {
-        return this.m_score1 - this.m_score2 <= diff;
-      });
-      return this.TITLE_GREATER_THAN_OR_EQUAL_FOUR[index];
+    if (this.isAfterDeuce()) {
+      return this.getAfterDeuceScore();
     }
-    return '';
+    return this.getScoreBeforeDeuce();
   }
 
-  checkElseAndGetScore() {
-    return this.ELSE[this.m_score1] + '-' + this.ELSE[this.m_score2];
+  isEqual(): boolean {
+    return this.player1Score == this.player2Score;
+  }
+
+  isAfterDeuce(): boolean {
+    return this.player1Score >= 4 || this.player2Score >= 4;
+  }
+
+  getEqualScore(): string {
+    return this.TITLE_EQUAL[this.player1Score] || 'Deuce';
+  }
+
+  getAfterDeuceScore() {
+    const index: number = this.DIFF_SCORE.findIndex((diff: number) => {
+      return this.player1Score - this.player2Score <= diff;
+    });
+    return this.TITLE_FROM_DEUCE[index];
+  }
+
+  getScoreBeforeDeuce() {
+    return this.TITLE_NOT_EQUAL[this.player1Score] + '-' + this.TITLE_NOT_EQUAL[this.player2Score];
   }
 }

@@ -14,7 +14,7 @@ export class TennisGame1 implements TennisGame {
   private DIFF_SCORE: any = [-2, -1, 1, Infinity];
   private TITLE_FROM_DEUCE: any = ['Win for player2', 'Advantage player2', 'Advantage player1', 'Win for player1'];
 
-  private TITLE_NOT_EQUAL = {
+  private TITLE = {
     0: 'Love',
     1: 'Fifteen',
     2: 'Thirty',
@@ -61,6 +61,6 @@ export class TennisGame1 implements TennisGame {
   }
 
   getScoreBeforeDeuce() {
-    return this.TITLE_NOT_EQUAL[this.player1Score] + '-' + this.TITLE_NOT_EQUAL[this.player2Score];
+    return this.TITLE[this.player1Score] + '-' + this.TITLE[this.player2Score];
   }
 }

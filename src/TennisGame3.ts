@@ -15,13 +15,19 @@ export class TennisGame3 implements TennisGame {
   }
 
   getScore(): string {
-    if (this.isYetDeuce()) return this.getScoreYetDeuce();
-    if (this.isDeuce()) return this.getScoreDeuce();
-    if (this.isAdvantage()) return this.getScoreAdvantage();
+    if (this.isBeforeDeuce()) {
+      return this.getScoreBeforeDeuce();
+    }
+    if (this.isDeuce()) {
+      return this.getScoreDeuce();
+    }
+    if (this.isAdvantage()) {
+      return this.getScoreAdvantage();
+    }
     return this.getScoreKnockout();
   }
 
-  isYetDeuce(): boolean {
+  isBeforeDeuce(): boolean {
     return Math.max(this.point1, this.point2) <= 3 && (this.point1 + this.point2) !== 6;
   }
 
@@ -33,7 +39,7 @@ export class TennisGame3 implements TennisGame {
     return Math.min(this.point1, this.point2) >= 3 && Math.abs(this.point1 - this.point2) == 1;
   }
 
-  getScoreYetDeuce(): string {
+  getScoreBeforeDeuce(): string {
     if (this.point1 == this.point2) {
       return this.TITLES[this.point1] + '-All';
     }

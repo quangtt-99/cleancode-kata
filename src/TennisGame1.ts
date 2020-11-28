@@ -1,11 +1,27 @@
 import { TennisGame } from './TennisGame';
 
-
 export class TennisGame1 implements TennisGame {
   private m_score1: number = 0;
   private m_score2: number = 0;
   private player1Name: string;
   private player2Name: string;
+  private EQUAL: any = {
+    0: 'Love-All',
+    1: 'Fifteen-All',
+    2: 'Thirty-All',
+  };
+  private GREATER_THAN_OR_EQUAL_FOUR: any = [
+    [-2, 'Win for player2'],
+    [-1, 'Advantage player2'],
+    [1, 'Advantage player1'],
+    [Infinity, 'Win for player1'],
+  ];
+  private ELSE = {
+    0: 'Love',
+    1: 'Fifteen',
+    2: 'Thirty',
+    3: 'Forty'
+  };
 
   constructor(player1Name: string, player2Name: string) {
     this.player1Name = player1Name;
@@ -13,59 +29,34 @@ export class TennisGame1 implements TennisGame {
   }
 
   wonPoint(playerName: string): void {
-    if (playerName === 'player1')
-      this.m_score1 += 1;
-    else
-      this.m_score2 += 1;
+    if (playerName === 'player1') this.m_score1 += 1;
+    else this.m_score2 += 1;
   }
 
   getScore(): string {
-    let score: string = '';
-    let tempScore: number = 0;
-    if (this.m_score1 === this.m_score2) {
-      switch (this.m_score1) {
-        case 0:
-          score = 'Love-All';
-          break;
-        case 1:
-          score = 'Fifteen-All';
-          break;
-        case 2:
-          score = 'Thirty-All';
-          break;
-        default:
-          score = 'Deuce';
-          break;
+    const scoreFirstCheck: string = this.checkEqualAndGetScore();
+    const scoreSecondCheck: string = this.checkGreaterThanOrEqualFourAndGetScore();
+    const scoreThirdCheck: string = this.checkElseAndGetScore();
+    return scoreFirstCheck || scoreSecondCheck || scoreThirdCheck;
+  }
 
-      }
+  checkEqualAndGetScore() {
+    if (this.m_score1 === this.m_score2) {
+      return this.EQUAL[this.m_score1] || 'Deuce';
     }
-    else if (this.m_score1 >= 4 || this.m_score2 >= 4) {
-      const minusResult: number = this.m_score1 - this.m_score2;
-      if (minusResult === 1) score = 'Advantage player1';
-      else if (minusResult === -1) score = 'Advantage player2';
-      else if (minusResult >= 2) score = 'Win for player1';
-      else score = 'Win for player2';
+    return '';
+  }
+
+  checkGreaterThanOrEqualFourAndGetScore() {
+    if (this.m_score1 >= 4 || this.m_score2 >= 4) {
+      return this.GREATER_THAN_OR_EQUAL_FOUR.find((score) => {
+        return this.m_score1 - this.m_score2 <= score[0];
+      })[1];
     }
-    else {
-      for (let i = 1; i < 3; i++) {
-        if (i === 1) tempScore = this.m_score1;
-        else { score += '-'; tempScore = this.m_score2; }
-        switch (tempScore) {
-          case 0:
-            score += 'Love';
-            break;
-          case 1:
-            score += 'Fifteen';
-            break;
-          case 2:
-            score += 'Thirty';
-            break;
-          case 3:
-            score += 'Forty';
-            break;
-        }
-      }
-    }
-    return score;
+    return '';
+  }
+
+  checkElseAndGetScore() {
+    return this.ELSE[this.m_score1] + '-' + this.ELSE[this.m_score2];
   }
 }

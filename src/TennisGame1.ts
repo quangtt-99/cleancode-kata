@@ -33,10 +33,10 @@ export class TennisGame1 implements TennisGame {
 
   getScore(): string {
     if (this.isEqual()) {
-      return this.getEqualScore();
+      return this.getScoreIfEqual();
     }
     if (this.isAfterDeuce()) {
-      return this.getAfterDeuceScore();
+      return this.getScoreAfterDeuce();
     }
     return this.getScoreBeforeDeuce();
   }
@@ -49,11 +49,11 @@ export class TennisGame1 implements TennisGame {
     return this.player1Score >= 4 || this.player2Score >= 4;
   }
 
-  getEqualScore(): string {
+  getScoreIfEqual(): string {
     return this.TITLE_EQUAL[this.player1Score] || 'Deuce';
   }
 
-  getAfterDeuceScore() {
+  getScoreAfterDeuce() {
     const index: number = this.DIFF_SCORE.findIndex((diff: number) => {
       return this.player1Score - this.player2Score <= diff;
     });

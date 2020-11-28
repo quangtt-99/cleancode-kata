@@ -10,12 +10,10 @@ export class TennisGame1 implements TennisGame {
     1: 'Fifteen-All',
     2: 'Thirty-All',
   };
-  private GREATER_THAN_OR_EQUAL_FOUR: any = [
-    [-2, 'Win for player2'],
-    [-1, 'Advantage player2'],
-    [1, 'Advantage player1'],
-    [Infinity, 'Win for player1'],
-  ];
+
+  private DIFF_GREATER_THAN_OR_EQUAL_FOUR: any = [-2, -1, 1, Infinity];
+  private TITLE_GREATER_THAN_OR_EQUAL_FOUR: any = ['Win for player2', 'Advantage player2', 'Advantage player1', 'Win for player1'];
+
   private ELSE = {
     0: 'Love',
     1: 'Fifteen',
@@ -49,9 +47,10 @@ export class TennisGame1 implements TennisGame {
 
   checkGreaterThanOrEqualFourAndGetScore() {
     if (this.m_score1 >= 4 || this.m_score2 >= 4) {
-      return this.GREATER_THAN_OR_EQUAL_FOUR.find((score) => {
-        return this.m_score1 - this.m_score2 <= score[0];
-      })[1];
+      let index: number = this.DIFF_GREATER_THAN_OR_EQUAL_FOUR.findIndex((diff: number) => {
+        return this.m_score1 - this.m_score2 <= diff;
+      });
+      return this.TITLE_GREATER_THAN_OR_EQUAL_FOUR[index];
     }
     return '';
   }

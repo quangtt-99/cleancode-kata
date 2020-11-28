@@ -47,7 +47,7 @@ export class TennisGame1 implements TennisGame {
 
   checkGreaterThanOrEqualFourAndGetScore() {
     if (this.m_score1 >= 4 || this.m_score2 >= 4) {
-      let index: number = this.DIFF_GREATER_THAN_OR_EQUAL_FOUR.findIndex((diff: number) => {
+      const index: number = this.DIFF_GREATER_THAN_OR_EQUAL_FOUR.findIndex((diff: number) => {
         return this.m_score1 - this.m_score2 <= diff;
       });
       return this.TITLE_GREATER_THAN_OR_EQUAL_FOUR[index];

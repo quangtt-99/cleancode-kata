@@ -28,15 +28,15 @@ export class TennisGame3 implements TennisGame {
   }
 
   isBeforeDeuce(): boolean {
-    return Math.max(this.point1, this.point2) <= 3 && (this.point1 + this.point2) !== 6;
+    return Math.max(this.point1, this.point2) < 4 && !((this.point1 + this.point2) === 6);
   }
 
   isDeuce(): boolean {
-    return this.point1 == this.point2 && this.point1 >= 3;
+    return this.point1 == this.point2;
   }
 
   isAdvantage(): boolean {
-    return Math.min(this.point1, this.point2) >= 3 && Math.abs(this.point1 - this.point2) == 1;
+    return (((this.point1 - this.point2) * (this.point1 - this.point2)) === 1);
   }
 
   getScoreBeforeDeuce(): string {
